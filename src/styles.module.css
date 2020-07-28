@@ -1,9 +1,17 @@
-/* add css module styles here (optional) */
+.summon-wrap {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr;
+  place-items: center;
+}
 
-.test {
-  margin: 2em;
-  padding: 0.5em;
-  border: 2px solid #000;
-  font-size: 2em;
-  text-align: center;
+.summon input {
+  width: 25rem;
+  height: 4rem;
+  font-size: 3rem;
+  border-radius: 0.35rem;
+  border: 0;
+  background-color: rgba(39, 39, 39, 0.733);
+  color: #fff;
+  padding-left: 1rem;
 }
