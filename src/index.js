@@ -9,7 +9,7 @@ const Summon = (props) => {
   const [summonInput, setSummonInput] = useState('')
   const [suggestions, setSuggestions] = useState([])
 
-  const summonInput = useRef(null)
+  const summonTxtInput = useRef(null)
 
   useEffect(() => {
     const keyListener = (e) => {
@@ -42,7 +42,7 @@ const Summon = (props) => {
   // focus the input
   useEffect(() => {
     if (isPrompted) {
-      summonInput.current.focus()
+      summonTxtInput.current.focus()
     }
   }, [isPrompted])
 
@@ -54,7 +54,7 @@ const Summon = (props) => {
             <input
               type='text'
               placeholder='&rarr;'
-              ref={summonInput}
+              ref={summonTxtInput}
               value={summonInput}
               onChange={(e) => setSummonInput(e.target.value)}
             />
