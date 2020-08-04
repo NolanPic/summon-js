@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import tinykeys from 'tinykeys'
 import Suggestions from './components/Suggestions'
 import testCommands from './test-data/commands'
 
@@ -12,6 +13,14 @@ const Summon = (props) => {
   const summonTxtInput = useRef(null)
 
   useEffect(() => {
+    let unsubscribe = tinykeys(window, {
+      'Control+Space': (e) => {
+        e.preventDefault()
+        // user is pressing both keys, toggle Summon
+        setIsPrompted(!isPrompted)
+      }
+    })
+
     const keyListener = (e) => {
       // if Summon is already open, start matching suggestions
       // as the user is typing
@@ -22,11 +31,6 @@ const Summon = (props) => {
           )
         )
       }
-
-      if (e.keyCode === COMMAND_KEY && e.shiftKey) {
-        // user is pressing both keys, toggle Summon
-        setIsPrompted(!isPrompted)
-      }
     }
 
     document.body.addEventListener('keydown', keyListener)
@@ -34,6 +38,7 @@ const Summon = (props) => {
 
     // cleanup
     return () => {
+      unsubscribe()
       document.body.removeEventListener('keydown', keyListener)
       document.body.removeEventListener('keyup', keyListener)
     }
