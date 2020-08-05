@@ -1,48 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
-import tinykeys from 'tinykeys'
 import Suggestions from './components/Suggestions'
+import useKeyListener from './hooks/useKeyListener'
 import testCommands from './test-data/commands'
 
-const COMMAND_KEY = 91
-
-const Summon = (props) => {
-  const [isPrompted, setIsPrompted] = useState(false)
-  const [summonInput, setSummonInput] = useState('')
+const Summon = () => {
+  const [isPrompted, summonInput, setSummonInput] = useKeyListener()
   const [suggestions, setSuggestions] = useState([])
 
   const summonTxtInput = useRef(null)
-
-  useEffect(() => {
-    let unsubscribe = tinykeys(window, {
-      'Control+Space': (e) => {
-        e.preventDefault()
-        // user is pressing both keys, toggle Summon
-        setIsPrompted(!isPrompted)
-      }
-    })
-
-    const keyListener = (e) => {
-      // if Summon is already open, start matching suggestions
-      // as the user is typing
-      if (isPrompted && summonInput.length) {
-        setSuggestions(
-          testCommands.filter((cmd) =>
-            cmd.toLowerCase().contains(summonInput.toLowerCase())
-          )
-        )
-      }
-    }
-
-    document.body.addEventListener('keydown', keyListener)
-    document.body.addEventListener('keyup', keyListener)
-
-    // cleanup
-    return () => {
-      unsubscribe()
-      document.body.removeEventListener('keydown', keyListener)
-      document.body.removeEventListener('keyup', keyListener)
-    }
-  }, [isPrompted])
 
   // focus the input
   useEffect(() => {
