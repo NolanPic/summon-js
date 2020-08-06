@@ -3,8 +3,10 @@ import Suggestions from './components/Suggestions'
 import useKeyListener from './hooks/useKeyListener'
 import testCommands from './test-data/commands'
 
-const Summon = () => {
-  const [isPrompted, summonInput, setSummonInput] = useKeyListener()
+const Summon = ({ config }) => {
+  const [isPrompted, summonInput, setSummonInput] = useKeyListener(
+    config?.toggleWith // will be undefined if config isn't passed
+  )
   const [suggestions, setSuggestions] = useState([])
 
   const summonTxtInput = useRef(null)
