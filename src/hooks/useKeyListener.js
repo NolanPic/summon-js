@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react'
 import tinykeys from 'tinykeys'
 
-const useKeyListener = () => {
+const useKeyListener = (toggleWithKeys) => {
   const [isPrompted, setIsPrompted] = useState(false)
   const [summonInput, setSummonInput] = useState('')
 
   useEffect(() => {
+    // use the user-defined key combo if available, otherwise default
+    const keysCombo = toggleWithKeys ? toggleWithKeys : 'Control+Space'
+
     let unsubscribe = tinykeys(window, {
-      'Control+Space': (e) => {
+      [keysCombo]: (e) => {
         e.preventDefault()
-        // user is pressing both keys, toggle Summon
+        // user is toggling Summon
         setIsPrompted(!isPrompted)
       }
     })
