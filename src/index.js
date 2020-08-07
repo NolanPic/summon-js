@@ -4,9 +4,10 @@ import useKeyListener from './hooks/useKeyListener'
 import testCommands from './test-data/commands'
 
 const Summon = ({ config }) => {
-  const [isPrompted, summonInput, setSummonInput] = useKeyListener(
-    config?.toggleWith // will be undefined if config isn't passed
-  )
+  // argument will be undefined if config isn't passed
+  const [isPrompted] = useKeyListener(config?.toggleWith)
+
+  const [summonInput, setSummonInput] = useState('')
   const [suggestions, setSuggestions] = useState([])
 
   const summonTxtInput = useRef(null)
@@ -17,6 +18,22 @@ const Summon = ({ config }) => {
       summonTxtInput.current.focus()
     }
   }, [isPrompted])
+
+  // set suggestions when input changes
+  useEffect(() => {
+    // if Summon is open, start matching suggestions
+    // as the user is typing
+    if (isPrompted && summonInput.length) {
+      setSuggestions(
+        testCommands.filter(
+          (cmd) =>
+            cmd.name.toLowerCase().indexOf(summonInput.toLowerCase()) !== -1
+        )
+      )
+    } else {
+      setSuggestions([])
+    }
+  }, [summonInput])
 
   return (
     <React.Fragment>
